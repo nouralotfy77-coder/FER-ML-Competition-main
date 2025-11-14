@@ -8,7 +8,10 @@ on:
 jobs:
   evaluate:
     runs-on: ubuntu-latest
-
+    permissions:
+          contents: write
+          pull-requests: write
+      
     steps:
       # 1️⃣ Checkout the PR branch of the public repo
       - name: Checkout public repo
