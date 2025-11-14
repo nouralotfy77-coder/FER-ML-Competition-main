@@ -12,16 +12,16 @@ jobs:
     steps:
       # 1️⃣ Checkout the PR branch of the public repo
       - name: Checkout public repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
 
       # 2️⃣ Checkout private repo (contains test_labels.csv)
       - name: Checkout private repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: nouraessam77/FER-ML-Competition-Private
           path: private_data
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.PRIVATE_REPO_TOKEN }}
 
       # 3️⃣ Setup Python
       - name: Set up Python
