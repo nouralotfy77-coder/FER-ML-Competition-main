@@ -1,0 +1,55 @@
+name: Evaluate Submission
+
+on:
+  pull_request:
+    paths:
+      - 'submission/*.csv'  # Trigger only on submission CSVs
+
+jobs:
+  evaluate:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1️⃣ Checkout the PR branch of the public repo
+      - name: Checkout public repo
+        uses: actions/checkout@v3
+
+
+      # 2️⃣ Checkout private repo (contains test_labels.csv)
+      - name: Checkout private repo
+        uses: actions/checkout@v3
+        with:
+          repository: Tasneem-Selim-Researcher/FER-ML-Competition-Private
+          token: ${{ secrets.PRIVATE_REPO_TOKEN }}
+          path: private_data
+
+      # 3️⃣ Setup Python
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      # 4️⃣ Install dependencies
+      - name: Install dependencies
+        run: pip install pandas scikit-learn numpy
+
+      # 5️⃣ Evaluate all submissions
+      - name: Evaluate submissions
+        run: |
+          for file in submission/*.csv; do
+            echo "Evaluating $file..."
+            python evaluate.py "$file" "private_data/test_labels.csv"
+          done
+
+      # 6️⃣ Commit and push updated leaderboard (results.csv) to main branch
+      - name: Commit leaderboard
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git checkout main
+          git add results.csv
+          git commit -m "Update leaderboard from PR #${{ github.event.number }}" || echo "No changes to commit"
+          git push origin main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+ 
