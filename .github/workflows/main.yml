@@ -3,7 +3,7 @@ name: Evaluate Submission
 on:
   pull_request:
     paths:
-      - 'submission/*.csv'  # Trigger only on submission CSV
+      - 'submission/*.csv'  # Trigger only on submission CSVs
 
 jobs:
   evaluate:
