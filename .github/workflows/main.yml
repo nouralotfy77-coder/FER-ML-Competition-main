@@ -12,7 +12,6 @@ jobs:
           contents: write
           pull-requests: write
           actions: write
-          id-token: read
       
     steps:
       # 1️⃣ Checkout the PR branch of the public repo
