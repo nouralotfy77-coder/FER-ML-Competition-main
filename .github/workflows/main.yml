@@ -71,7 +71,6 @@ jobs:
             # Create a placeholder results file if it doesn't exist
             if [ ! -f "results.csv" ]; then
               echo "submission,accuracy,f1_score,timestamp,error" > results.csv
-              echo "No evaluations yet" >> results.csv
               git add results.csv
               git commit -m "Initialize results.csv"
               git push origin main
