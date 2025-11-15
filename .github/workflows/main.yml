@@ -26,7 +26,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: nouraessam77/FER-ML-Competition-Private
-          token: ${{ secrets.a }}
+          token: ${{ secrets.PRIVATE_REPO_TOKEN }}
           path: private_data
        # 3️⃣ Checkout public repo main branch (for evaluate.py)
       - name: Checkout public repo main branch
@@ -77,6 +77,5 @@ jobs:
               git push origin main
             fi
           fi
-          git commit -m "Update leaderboard from PR #${{ github.event.number }}" || echo "No changes to commit"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
