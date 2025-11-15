@@ -41,7 +41,7 @@ if os.path.exists(leaderboard_file):
     # Remove existing entry for this team
     leaderboard = leaderboard[leaderboard['submission'] != team_name]
 else:
-    leaderboard = pd.DataFrame(columns=['submission', 'accuracy', 'f1_score', 'timestamp', 'error'])
+    leaderboard = pd.DataFrame(columns=['submission', 'accuracy', 'timestamp'])
 # Add new entry
 leaderboard = pd.concat([leaderboard, pd.DataFrame([new_entry])], ignore_index=True)
 # Save
