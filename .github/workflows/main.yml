@@ -52,29 +52,42 @@ jobs:
             echo "Evaluating $file..."
             python public_main/evaluate.py "$file" "private_data/test_labels.csv"
           done
-
+      # 8️⃣ Clean up before committing (remove untracked files we don't want)
+      - name: Clean untracked files
+        run: |
+          echo "=== Cleaning untracked files ==="
+          # Remove the directories/files we don't want to track
+          rm -rf private_data/ public_main/ 
+          echo "Remaining files:"
+          ls -la
+      
       # 6️⃣ Commit and push updated leaderboard (results.csv) to main branch
-         # Commit results with force push (use carefully)
-      - name: Commit leaderboard
+      # 7️⃣ Commit all result files (leaderboard + individual team results)
+      - name: Commit all results
         run: |
           echo "=== Setting up git ==="
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           
-          echo "=== Pulling and overwrite local changes ==="
-          git fetch origin
-          git reset --hard origin/main
-          
-          echo "=== Checking results.csv ==="
+          echo "=== Pulling latest changes ==="
+          git pull origin main --rebase --autostash
+        
+          # Add both the main leaderboard and individual result files
           if [ -f "results.csv" ]; then
-            echo "results.csv content:"
-            cat results.csv
             git add results.csv
-            git commit -m "Update leaderboard from PR #${{ github.event.number }} [Automated]"
+          fi
+          
+          if [ -d "results" ]; then
+            git add results/
+          fi
+          
+          # Check if there are changes to commit
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Update leaderboard and team results from PR #${{ github.event.number }} [Automated]"
             echo "=== Pushing changes ==="
             git push origin main
-          else
-            echo "results.csv not found - skipping commit"
           fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
