@@ -27,6 +27,7 @@ jobs:
         with:
           repository: nouraessam77/FER-ML-Competition-Private
           token: ${{ secrets.a }}
+          path: private_data
 
       # 3️⃣ Setup Python
       - name: Set up Python
