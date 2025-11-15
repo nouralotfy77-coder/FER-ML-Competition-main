@@ -60,21 +60,8 @@ jobs:
           git config --local user.name "GitHub Action"
           git checkout main
           git push origin main
-          # Check if results.csv exists and has content beyond header
-          if [ -f "results.csv" ] && [ $(wc -l < results.csv) -gt 1 ]; then
-            echo "Committing results.csv..."
-            git add results.csv
-            git commit -m "Update leaderboard from PR #${{ github.event.number }}"
-            git push origin main
-          else
-            echo "No valid results to commit"
-            # Create a placeholder results file if it doesn't exist
-            if [ ! -f "results.csv" ]; then
-              echo "submission,accuracy,f1_score,timestamp,error" > results.csv
-              git add results.csv
-              git commit -m "Initialize results.csv"
-              git push origin main
-            fi
-          fi
+          git add results.csv
+          git commit -m "Update leaderboard from PR #${{ github.event.number }}" || echo "No changes to commit"
+          git push origin main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
