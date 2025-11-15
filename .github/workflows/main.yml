@@ -28,7 +28,13 @@ jobs:
           repository: nouraessam77/FER-ML-Competition-Private
           token: ${{ secrets.a }}
           path: private_data
-
+       # 3️⃣ Checkout public repo main branch (for evaluate.py)
+      - name: Checkout public repo main branch
+        uses: actions/checkout@v3
+        with:
+          ref: main
+          path: public_main
+          token: ${{ secrets.GITHUB_TOKEN }}
       # 3️⃣ Setup Python
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -44,7 +50,7 @@ jobs:
         run: |
           for file in submission/*.csv; do
             echo "Evaluating $file..."
-            python evaluate.py "$file" "private_data/test_labels.csv"
+            python public_main/evaluate.py "$file" "private_data/test_labels.csv"
           done
 
       # 6️⃣ Commit and push updated leaderboard (results.csv) to main branch
