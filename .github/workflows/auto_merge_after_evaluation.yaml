@@ -29,7 +29,7 @@ jobs:
           # Check if all changes are in submission/ folder and are additions/modifications only
           VALID=true
           while IFS= read -r file; do
-            if [[ ! "$file" =~ ^submission/ ]]; then
+            if [[ ! "$file" =~ ^submission/*.csv ]]; then
               VALID=false
             fi
           done <<< "$CHANGED_FILES"
