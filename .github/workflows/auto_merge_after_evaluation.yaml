@@ -33,7 +33,6 @@ jobs:
               VALID=false
             fi
             if [[ ! "$file" =~ \.csv$ ]]; then
-                echo "❌ Not a CSV file: $file"
                 VALID=false
             fi
           done <<< "$CHANGED_FILES"
