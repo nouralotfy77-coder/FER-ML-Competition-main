@@ -32,6 +32,10 @@ jobs:
             if [[ ! "$file" =~ ^submission/*.csv ]]; then
               VALID=false
             fi
+            if [[ ! "$file" =~ \.csv$ ]]; then
+                echo "❌ Not a CSV file: $file"
+                VALID=false
+            fi
           done <<< "$CHANGED_FILES"
           
           # Check for deletions (we don't want to auto-approve deletions)
